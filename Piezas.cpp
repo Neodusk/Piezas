@@ -52,7 +52,7 @@ Piece Piezas::dropPiece(int column)
     // change turn
     (turn == X) ? turn = O : turn = X;
     // if column out of bounds
-    if (column >= BOARD_COLS || column <= 0 ) {
+    if (column >= BOARD_COLS || column < 0 ) {
         return Invalid;
     }
     if (board[column].size() < BOARD_ROWS) {
@@ -72,14 +72,14 @@ Piece Piezas::dropPiece(int column)
 Piece Piezas::pieceAt(int row, int column)
 {
      // if out of bounds
-    if (column >= BOARD_COLS || column < 0 || row >= BOARD_ROWS || row < 0 ) {
+    if ((column >= BOARD_COLS || column < 0) || (row >= BOARD_ROWS || row < 0)) {
         return Invalid;
     }
-     if (board[row].empty()) {
+     if (board[column].empty()) {
         return Blank;
     }
-    if (board[row][column] == X || board[row][column] == O) {
-        return board[row][column];
+    if (board[column][row] == X || board[column][row] == O) {
+        return board[column][row];
     }
     return Blank;
 }
@@ -95,5 +95,78 @@ Piece Piezas::pieceAt(int row, int column)
 **/
 Piece Piezas::gameState()
 {
-    return Blank;
+    // // if game not over, return invalid
+    for (int i = 0; i < BOARD_COLS; i++) {
+        if(board[i].size() != BOARD_ROWS) {
+            return Invalid;
+        }
+    }
+    // game is filled
+    // check for winner
+    int maxXCount = 0;
+    int maxOCount = 0;
+    // check vertical
+    for(int i = 0; i < BOARD_COLS; i++) {
+        int xCounter = 0;
+        int oCounter = 0;
+        Piece lastPiece = board[i][0];
+        for (int j = 0; j < BOARD_ROWS; j++) {
+            // if first piece, also set to lastPiece
+            if (board[i][j] == X) {
+                oCounter = 0;
+                if (lastPiece == X) {
+                    xCounter++;
+                    if (xCounter > maxXCount) {
+                        maxXCount = xCounter;
+                    }
+                }
+                lastPiece = X;
+            } else if (board[i][j] == O) {
+                xCounter = 0;
+                if (lastPiece == O) {
+                    oCounter++;
+                    if (oCounter > maxOCount) {
+                        maxOCount = oCounter;
+                    }
+                }
+                lastPiece = O;
+            }
+        }
+    }
+    // // check horizontal
+    for (int i = 0; i < BOARD_ROWS; i++) {
+        int xCounter = 0;
+        int oCounter = 0;
+        Piece lastPiece = board[0][i];
+        for (int j = 0; j < BOARD_COLS; j++) {
+            // if first piece, also set to lastPiece
+            if (board[j][i] == X) {
+                oCounter = 0;
+                 if (lastPiece == X) {
+                    xCounter++;
+                    if (xCounter > maxXCount) {
+                        maxXCount = xCounter;
+                    }
+                }
+                lastPiece = X;
+            }
+            if (board[j][i] == O){
+                xCounter = 0;
+                  if (lastPiece == O) {
+                    oCounter++;
+                    if (oCounter > maxOCount) {
+                        maxOCount = oCounter;
+                    }
+                }
+                // if (lastPiece == X) oCounter += 1;
+                lastPiece = O;
+            }
+        }
+    }
+    // if tie return Blank
+    if (maxXCount == maxOCount) {
+        return Blank;
+    }
+    Piece winner = (maxOCount > maxXCount) ? O : X;
+    return (winner);
 }

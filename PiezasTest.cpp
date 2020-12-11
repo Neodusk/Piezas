@@ -49,6 +49,14 @@ TEST(PiezasTest, dropPieceValid)
 	ASSERT_TRUE(board.dropPiece(1) == X);
 }
 
+TEST(PiezasTest, dropPieceValidMultiple)
+{
+	Piezas board;
+	board.dropPiece(1);
+	board.dropPiece(1);
+	ASSERT_TRUE(board.dropPiece(1) == X);
+}
+
 
 TEST(PiezasTest, pieceAtInvalidColumn) 
 {
@@ -68,8 +76,8 @@ TEST(PiezasTest, pieceAtBlankSameColumn)
 	Piezas board;
 	board.dropPiece(1);
 	board.dropPiece(1);
-	// board at 0,1 and 1,1 filled
-	ASSERT_TRUE(board.pieceAt(2,1) == Blank);
+	// board at 1,0 and 1,1 filled
+	ASSERT_TRUE(board.pieceAt(1,2) == Blank);
 }
 
 TEST(PiezasTest, pieceAtBlankDifferrentColumn) 
@@ -77,15 +85,14 @@ TEST(PiezasTest, pieceAtBlankDifferrentColumn)
 	Piezas board;
 	board.dropPiece(1);
 	board.dropPiece(1);
-	// board at 0,1 and 1,1 filled
-	ASSERT_TRUE(board.pieceAt(1,2) == Blank);
+	// board at 1,0 and 1,1 filled
+	ASSERT_TRUE(board.pieceAt(2,1) == Blank);
 }
 
 TEST(PiezasTest, pieceAtNoPlacement) 
 {
 	Piezas board;
-	// board at 0,1 and 1,1 filled
-	ASSERT_TRUE(board.pieceAt(1,2) == Blank);
+	ASSERT_TRUE(board.pieceAt(2,1) == Blank);
 }
 
 TEST(PiezasTest, pieceAtOFilled) 
@@ -101,5 +108,130 @@ TEST(PiezasTest, pieceAtXFilled)
 	Piezas board;
 	board.dropPiece(1);
 	board.dropPiece(1);
-	ASSERT_TRUE(board.pieceAt(1,0) == X);
+	ASSERT_TRUE(board.pieceAt(0,1) == X);
 }
+
+TEST(PiezasTest, pieceAtVeryFull) 
+{
+	Piezas board;
+	board.dropPiece(0);
+	board.dropPiece(0);
+	board.dropPiece(0);
+	board.dropPiece(1);
+	board.dropPiece(1);
+	board.dropPiece(1);
+	board.dropPiece(2);
+	board.dropPiece(2);
+	board.dropPiece(2);
+	board.dropPiece(3);
+	ASSERT_TRUE(board.pieceAt(2,2) == X);
+}
+TEST(PiezasTest, pieceAtOFilledFalsey) 
+{
+	Piezas board;
+	board.dropPiece(1);
+	board.dropPiece(1);
+	ASSERT_FALSE(board.pieceAt(1,1) == X);
+}
+
+TEST(PiezasTest, pieceAtXFilledFalsey) 
+{
+	Piezas board;
+	board.dropPiece(1);
+	board.dropPiece(1);
+	ASSERT_FALSE(board.pieceAt(1,0) == O);
+}
+
+TEST(PiezasTest, gameStateXWins) 
+{
+	Piezas board;
+	board.dropPiece(0);  
+	board.dropPiece(0);
+	board.dropPiece(0);
+	board.dropPiece(1);
+	board.dropPiece(1);
+	board.dropPiece(1);
+	board.dropPiece(2);
+	board.dropPiece(2);
+	board.dropPiece(2);
+	board.dropPiece(3);
+	board.dropPiece(3);
+	board.dropPiece(3);
+	
+}
+
+TEST(PiezasTest, gameStateOWins) 
+{
+	Piezas board;
+}
+
+TEST(PiezasTest, gameStateNotOverMostlyFull) 
+{
+	Piezas board;
+	board.dropPiece(0);
+	board.dropPiece(0);
+	board.dropPiece(0);
+	board.dropPiece(1);
+	board.dropPiece(1);
+	board.dropPiece(1);
+	board.dropPiece(2);
+	board.dropPiece(2);
+	board.dropPiece(2);
+	board.dropPiece(3);
+	board.dropPiece(3);
+	ASSERT_FALSE(board.gameState() != Invalid);
+}
+
+TEST(PiezasTest, gameStateNotOverMostlyEmpty) 
+{
+	Piezas board;
+	board.dropPiece(1);
+	board.dropPiece(1);
+	board.dropPiece(2);
+	board.dropPiece(2);
+	ASSERT_TRUE(board.gameState() == Invalid);
+}
+
+TEST(PiezasTest, gameStateTieNoAdjacent) 
+{
+	Piezas board;
+	board.dropPiece(0);
+	board.dropPiece(0);
+	board.dropPiece(0);
+	board.dropPiece(1);
+	board.dropPiece(1);
+	board.dropPiece(1);
+	board.dropPiece(2);
+	board.dropPiece(2);
+	board.dropPiece(2);
+	board.dropPiece(3);
+	board.dropPiece(3);
+	board.dropPiece(3);
+	ASSERT_TRUE(board.gameState() == Blank);
+}
+
+TEST(PiezasTest, gameStateWinXVertical) 
+{
+	/**o x o o
+	 * o x o x
+	 * x x x o
+	 * 
+	 */
+	Piezas board;
+	board.dropPiece(0); // x 
+	board.dropPiece(0);
+	board.dropPiece(1); // x
+	board.dropPiece(0);
+	board.dropPiece(1); // x
+	board.dropPiece(3);
+	board.dropPiece(3); // x
+	board.dropPiece(3);
+	board.dropPiece(2); // x
+	board.dropPiece(2);
+	board.dropPiece(1); // x
+	board.dropPiece(2);
+	
+	ASSERT_TRUE(board.gameState() == X);
+}
+
+
