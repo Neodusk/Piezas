@@ -234,4 +234,117 @@ TEST(PiezasTest, gameStateWinXVertical)
 	ASSERT_TRUE(board.gameState() == X);
 }
 
+TEST(PiezasTest, gameStateWinOVertical) 
+{
+	/**x o x x
+	 * x o x o
+	 * o o o x
+	 * 
+	 */
+	Piezas board;
+	board.dropPiece(3);
+	board.dropPiece(0); // o
+	board.dropPiece(0);
+	board.dropPiece(1); // o
+	board.dropPiece(0);
+	board.dropPiece(1); // o
+	board.dropPiece(3);
+	board.dropPiece(2); // o
+	board.dropPiece(2);
+	board.dropPiece(1); // o
+	board.dropPiece(2);
+	board.dropPiece(3); // o
+	
+	ASSERT_TRUE(board.gameState() == O);
+}
 
+TEST(PiezasTest, gameStateWinXHorizontal) 
+{
+	/**o o x o
+	 * x x x x
+	 * o o o x
+	 * 
+	 */
+	Piezas board;
+	board.dropPiece(3); // x 
+	board.dropPiece(0);
+	board.dropPiece(3); // x
+	board.dropPiece(1);
+	board.dropPiece(0); // x
+	board.dropPiece(2);
+	board.dropPiece(1); // x
+	board.dropPiece(0);
+	board.dropPiece(2); // x
+	board.dropPiece(1);
+	board.dropPiece(2); // x
+	board.dropPiece(3);
+	
+	ASSERT_TRUE(board.gameState() == X);
+}
+TEST(PiezasTest, gameStateWinXHorizontalFalsey) 
+{
+	/**o o x o
+	 * x x x x
+	 * o o o x
+	 * 
+	 */
+	Piezas board;
+	board.dropPiece(3); // x 
+	board.dropPiece(0);
+	board.dropPiece(3); // x
+	board.dropPiece(1);
+	board.dropPiece(0); // x
+	board.dropPiece(2);
+	board.dropPiece(1); // x
+	board.dropPiece(0);
+	board.dropPiece(2); // x
+	board.dropPiece(1);
+	board.dropPiece(2); // x
+	board.dropPiece(3);
+	ASSERT_FALSE(board.gameState() == O);
+}
+TEST(PiezasTest, gameStateWinOHorizontal) 
+{
+	/**x x o x
+	 * o o o o
+	 * x x x o
+	 * 
+	 */
+	Piezas board;
+	board.dropPiece(0); // x 
+	board.dropPiece(0);
+	board.dropPiece(1); // x
+	board.dropPiece(1);
+	board.dropPiece(2); // x
+	board.dropPiece(2);
+	board.dropPiece(1); // x
+	board.dropPiece(3);
+	board.dropPiece(0); // x
+	board.dropPiece(3);
+	board.dropPiece(3); // x
+	board.dropPiece(2);
+	ASSERT_TRUE(board.gameState() == O);
+}
+
+TEST(PiezasTest, gameStateWinOHorizontalFalsey) 
+{
+	/**x x o x
+	 * o o o o
+	 * x x x o
+	 * 
+	 */
+	Piezas board;
+	board.dropPiece(0); // x 
+	board.dropPiece(0);
+	board.dropPiece(1); // x
+	board.dropPiece(1);
+	board.dropPiece(2); // x
+	board.dropPiece(2);
+	board.dropPiece(1); // x
+	board.dropPiece(3);
+	board.dropPiece(0); // x
+	board.dropPiece(3);
+	board.dropPiece(3); // x
+	board.dropPiece(2);
+	ASSERT_FALSE(board.gameState() == X);
+}

@@ -158,7 +158,6 @@ Piece Piezas::gameState()
                         maxOCount = oCounter;
                     }
                 }
-                // if (lastPiece == X) oCounter += 1;
                 lastPiece = O;
             }
         }
