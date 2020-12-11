@@ -1,5 +1,6 @@
 #include "Piezas.h"
 #include <vector>
+#include <iostream>
 /** CLASS Piezas
  * Class for representing a Piezas vertical board, which is roughly based
  * on the game "Connect Four" where pieces are placed in a column and 
@@ -22,6 +23,8 @@
 **/
 Piezas::Piezas()
 {
+    turn = X;
+    reset();
 }
 
 /**
@@ -30,6 +33,8 @@ Piezas::Piezas()
 **/
 void Piezas::reset()
 {
+    board.clear();
+    board.resize(BOARD_COLS);
 }
 
 /**
@@ -42,7 +47,22 @@ void Piezas::reset()
 **/ 
 Piece Piezas::dropPiece(int column)
 {
-    return Blank;
+    Piece currentTurn;
+    currentTurn = turn;
+    // change turn
+    (turn == X) ? turn = O : turn = X;
+    // if column out of bounds
+    if (column >= BOARD_COLS || column <= 0 ) {
+        return Invalid;
+    }
+    if (board[column].size() < BOARD_ROWS) {
+        // place piece
+        board[column].push_back(currentTurn);
+        return currentTurn;
+    }  else {
+        // do not place if column is full
+        return Blank;
+    }
 }
 
 /**
@@ -51,6 +71,16 @@ Piece Piezas::dropPiece(int column)
 **/
 Piece Piezas::pieceAt(int row, int column)
 {
+     // if out of bounds
+    if (column >= BOARD_COLS || column < 0 || row >= BOARD_ROWS || row < 0 ) {
+        return Invalid;
+    }
+     if (board[row].empty()) {
+        return Blank;
+    }
+    if (board[row][column] == X || board[row][column] == O) {
+        return board[row][column];
+    }
     return Blank;
 }
 
